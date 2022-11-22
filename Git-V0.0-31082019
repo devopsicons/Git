@@ -1,0 +1,656 @@
+Git Virsion Control System:
+==========================
+what is version control system?
+-------------------------------
+--> source code management tool
+--> It manages source code
+--> maintain hitory
+--> maintain security
+--> To store source code
+--> allows to make branching like versions v1.0,v2.0, etc.,
+
+Type of version control system(VCS):
+------------------------------------
+--> VCS has 2 types
+	1) client-server based VCS:
+	===========================
+	    what are here:
+		-------------
+		i)  central server
+		ii) client manchine
+		
+		--> it is 2-tier architecture VCS
+			Eg Tools:- svn, cvs
+		
+		Features:
+		--> devlopers should connnect the server(online mode)
+		--> one bigger repo
+	
+	2) Distributed VCS (DVCS):
+	=========================
+		--> let see the architecture
+		
+		what are here:
+		-------------
+		i) Remote Repo (central server)
+		ii) client manchine
+		-------------------
+		a)Local Repo
+		b)User workspace
+		
+		features:
+		---------
+		--> developers can work offlinemode 
+		--> it is distributed
+		--> branching and merging is easier --> will see later
+		--> One time checkout(once clone from Remote Repo first time, need not to checkout again and again)
+		--> this support for smaller codes
+		--> make many smaller repo
+        
+		DisAdvantage:
+		------------
+		--> you cannot download a single file/directory or branch
+
+		Eg Tools:- Git, mercurial, Bazaar, etc.,
+		
+
+Git:
+===
+--> an open source DVCS(Distributed Version Control system) 
+--> developed for Linux Kernel development
+
+here Remote Repo is required:
+-----------------------------
+This we can solve in 2 ways
+
+1) On premises(with in the office/data center):
+	providers: gitblit,Bitbucket, etc
+	
+2) Cloud based: 
+	providers: GitHub, Bitbucket(rom Atlassian), GitLab, etc
+	
+	GitHub(Remote Repo) 	-->	1 public service  --> Visable to everyone and Anybody can access, there is no ristrictions
+								2 private service --> Visable to only you and Keep sourse code secure, for we go with the private by subscribe
+				
+	Git Client(Local Repo) 	--> It is a client software to connect Remote Repo 
+							--> It is needed to install at client machine(developer machine)
+
+Connecting Remote Repo(GitHub) by Git Bash(Git client from local system):
+=========================================================================
+Git Bash:
+--------
+--> Git is providing separate prompt
+--> that is a Git command prompt
+--> you can use all your Git commands overe here
+
+
+$ git init						-->Reinitialized existing Git repository in C:/Users/kumar/.git/
+$ git --version 				-->git version 2.23.0.windows.1
+$ git clone <Remote Repo URL>	-->to clone/replica of Remote Repo
+$ cd demo						--> change the directory into demo directory	
+$ ls							--> list of file and folders at current directory
+
+$ git clone <Remote Repo>	--> to get remote repo in to local repo	
+$ echo hello > hello.txt
+$ git config --global user.name jame
+$ git config --global user.email jame@gmail.com
+$ git status
+$ git add
+$ git commit -m ""
+$ git push					--> to update local repo to remte repo
+$ git pull					--> to get any changes of remote repo in to local repo
+
+$ git log 					--> to see history
+
+
+--> In git there is Versioning(like 0,1,2,etc.,)
+--> the Versioning is called as sha1sum
+--> These sha1sums are uniqe
+--> sha1sum is having 32 alphanumerics
+--> For every transaction it keeps create a uniqe shalsum
+
+$ git checkout <sha1sum first 6 alphanumerics)  --> for go back to one revision/sha1sum back
+$ git checkout master							--> for comeback to master repo
+
+$ git remote -v
+
+This is Distributed Version Controling system:
+=============================================
+Eg:
+1) Add a new remote repo in to user workspace and push the files in to the remote repo
+
+$ git remote add origin1 https://github.com/linakspro/demo.git
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$ git remote -v
+origin  http://admin@52.66.208.175:8090/gitblit-1.8.0/r/robotics.git (fetch)
+origin  http://admin@52.66.208.175:8090/gitblit-1.8.0/r/robotics.git (push)
+origin1 https://github.com/linakspro/demo.git (fetch)
+origin1 https://github.com/linakspro/demo.git (push)
+
+$ ls
+file1.txt  hi.txt  robs.txt
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$ git push origin1
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (10/10), 830 bytes | 14.00 KiB/s, done.
+Total 10 (delta 0), reused 0 (delta 0)
+To https://github.com/linakspro/demo.git
+ * [new branch]      master -> master
+
+2) check the file at remote repo for pushed files(https://github.com/linakspro/demo.git)
+
+3) $ git remote remove origin1 --> for remove the remote repo
+
+--------------------
+
+$git rm <file/directory name>	--> to remote file or directory
+
+$git log --oneline 				--> display in short 
+$git log hi.txt					--> log of perticular file
+$git log --author=linakspro		--> if you want to see a particular user logs
+$git shortlog					--> to see short logs by user wise
+
+
+Git Repo Structure
+------------------
+--> when you create a repository
+master /	--> default branch is master 
+	--> by default all the commits are over here
+	--> by default all logs are also showing here
+
+branch /	--> another location is branch
+tags /		--> another location is tags
+
+$ git branch R1			--> to create branch from master branch
+$ git branch			--> to see the existed/newly created branches for crosschecking
+  R1
+* master				--> * incates currently where you are in the branch
+
+$ git checkout R1		--> to switched to R1 branch
+$ git branch
+* R1					--> Now i am at R1 branch
+  master
+
+$ echo release first file > f1atR1.txt
+$ git add .
+$ git commit -m "commited first file at R1 f1atR1.txt"
+$ git log
+
+$ git checkout master
+$ git log				--> here you can not see the previous R1 branch commits
+
+$ git checkout R1
+$ git push origin R1	--> to push the R1 branch files into Remote Repo
+
+$ echo Hi.. I am from R1 team >> hi.txt
+$ git add .
+$ git commit -m "commit at R1 branch: hi.txt"
+$ git push origin R1
+
+--> lets check at Remote Repo R1 branch for the updated file
+
+$ git merge R1  --> When merge the R1 branch, the R1 branch files are added to the master branch
+				--> but master branch files are not added to the R1 branch
+					
+$ git branch	--> to see branches
+  R1
+  R2
+  R3
+  R4
+* master
+
+$ git branch -a						--> to see all branches(local repo branches and remote repo branches)
+  R1
+  R2
+  R3
+  R4
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/R1
+  remotes/origin/master
+  
+$ git branch -r						--> to see only remote repo branches
+  origin/HEAD -> origin/master
+  origin/R1
+  origin/master
+  
+$ git branch -m R1 V-1				--> to rename branch from R1 to V-1
+$ git checkout V-1
+$ git push origin :R1				--> for push into remote repo, here R1 was the old branch name that should be given here
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v0)
+$ git branch -m v0 v1
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v1)
+$ git push origin :v0
+remote: Updating references: 100% (1/1)
+To http://52.66.208.175:8090/gitblit-1.8.0/r/robotics.git
+ - [deleted]         v0
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v1)
+$ git push origin v1
+Total 0 (delta 0), reused 0 (delta 0)
+remote: Updating references: 100% (1/1)
+To http://52.66.208.175:8090/gitblit-1.8.0/r/robotics.git
+ * [new branch]      v1 -> v1
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v1)  --> Now it can update at Remote Repo
+
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v1)
+$ git branch -d R4												--> To delete R4 branch
+error: The branch 'R4' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D R4'.
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v1)
+$ git branch - R4
+fatal: '-' is not a valid branch name.
+d
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v1)
+$ git branch -D R4												--> To delete R4 branch
+Deleted branch R4 (was d3fe099).
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (v1)
+$ git branch
+  R2
+  R3
+  master
+* v1
+
+
+TAG:
+===
+--> tag is nothing but a snapshot/printscreen
+--> tagging to a particular sha1sum to identify easily
+--> 
+
+To create tag for latest sha1sum/revision number:
+-------------------------------------------------
+$ git log
+$ git tag v1.1		--> tag is given to the latest sha1sum
+$ git tag --list    --> to see list of tags
+$ git show v1.1		--> to see information of V1.1 tag
+
+To create tag for old sha1sum/revision number:
+----------------------------------------------
+$ git log
+$ git checkout 06fb9481		--> first go to the sha1sum/revision number
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics ((06fb948...))
+
+$ git tag OldTag -m "giving tag to old sha1sum"
+$ git tag --list			--> to see list of tags
+$ git show OldTag			--> to see details of the tag
+$ git push origin OldTag	--> to update Remote Repo with the OldTag tag
+$ git push origin V1.1		--> to update Remote Repo with the V1.1 tag
+
+To delete tag:
+-------------
+$ git checkout master		--> need to come to master branch first
+$ git tag --list			--> to see list of tag
+LastSat
+OldTag
+V1.1
+$ git tag -d V1.1			--> to delete existed tag
+$ git tag --list
+LastSat
+OldTag
+
+$ git push origin :V1.1										--> to update Remote Repo
+remote: Updating references: 100% (1/1)
+To http://52.66.208.175:8090/gitblit-1.8.0/r/robotics.git
+ - [deleted]         V1.1
+
+
+git blame:
+=========
+$ git blame <file name>			--> it shows which user is modified the file
+
+$ git blame R1f1.txt
+06fb9481 (linakspro 2019-08-30 17:12:07 +0530 1) File from R1 branch
+
+$ git blame mf1.txt
+2cfa860b (linakspro 2019-08-30 17:10:17 +0530 1) master file1
+
+$ git blame mf4.txt
+25c2dcdc (linakspro 2019-08-30 17:16:26 +0530 1) this file belongs to master branch
+c5316f6e (linakspro 2019-08-30 19:18:45 +0530 2) this file is belongs to master branch
+c5316f6e (linakspro 2019-08-30 19:18:45 +0530 3) it is very important file
+c5316f6e (linakspro 2019-08-30 19:18:45 +0530 4) plz don not delete this file
+
+git stash: (This is very important feature in Git DVCS)
+=========
+--> when your files are in the tracked/stages state(1.create file and 2 add the file = work location)
+--> if you want to remove the files, you can remove
+--> the removed files are stored in temporary memory, if you want you can revert it back from memory
+ 
+
+
+
+$ git status									--> my work space is clean 
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+
+$ echo hi.. > hi.txt		--> creating a file hi.txt
+$ git status				--> to see the file status, here the hi.txt file is in the untraked/unstaged state
+$ git add .					--> Add the file hi.txt to the tracked/staged state
+$ git status
+
+To delete staged/tracked state file:
+------------------------------------
+--> Deleted file will be store in the Temporay memory, if we need we revert it back
+
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   hi.txt
+
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+
+$ git stash									--> To remove staged/tracked files					
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+
+To see deleted staged/tracked files:
+-----------------------------------
+$ git stash list
+stash@{0}: WIP on master: c5316f6 commed file mf4.txt
+
+git stash apply:
+================
+--> To revert it back the file from stash(deleted) files
+
+$ git stash list
+stash@{0}: WIP on master: c5316f6 commed file mf4.txt
+
+$ git stash apply <stash ID>
+
+$ git stash apply stash@{0}		--> revert back the file from the stash, but copy is there in the stash memory
+
+$ git stash list
+stash@{0}: WIP on master: c5316f6 commed file mf4.txt
+
+$ git stash drop stash@{0}		--> to delete stash file permanently at stash memory
+$ git stash list				--> to check stash files in memory
+
+
+git stash pop:
+=============
+--> It is used for download the stashed latest file from stash memory and deleted the same file at stash memory
+
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$ git stash list
+stash@{0}: WIP on master: c5316f6 commed file mf4.txt
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$ git stash pop										--> to get back the stashed latest file and deleted at the satsh memory
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   hi.txt
+
+Dropped refs/stash@{0} (7112636bb7131dece9ed4f24bf740cb8081f5d23)
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$ git stash list
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$
+
+git clean -f :
+==============
+--> to remove untracked/unstaged files permanently
+--> we can`t get them back
+
+$ git clean -f
+
+git pull:
+=========
+--> whatever the changes are pushed into the Remote Repo by other Developers from their machines, that stored at Remote Repo
+--> Other developer is having their old local repo, by using "git pull" the developer can get whichever changes files are there
+    at Remote Repo that files will be copy/download in to his local repository
+--> then the developer has updated repo at his local repo
+--> this command will download chages and apply on the work space
+
+$ git pull
+
+
+git fetch:
+=========
+--> if you want to see remote changes, but you do not want to apply changes on your workspace, you can use 
+--> to corss check whether changes are there or not at Remote Repo you can use this
+--> this command will download changes and but not apply on the work space 
+	
+$ git fetch
+remote: Counting objects: 7, done
+remote: Finding sources: 100% (6/6)
+remote: Getting sizes: 100% (5/5)
+remote: Total 6 (delta 1), reused 6 (delta 1)
+Unpacking objects: 100% (6/6), done.
+From http://52.66.208.175:8090/gitblit-1.8.0/r/robotics
+   a29b05d..037a99a  master     -> origin/master
+
+$ ls
+harry.txt  mf1.txt  mf2.txt  mf3.txt  mf4.txt  R1f1.txt  R1f2.txt  R1f3.txt
+
+$ git pull
+Updating a29b05d..037a99a
+Fast-forward
+ hello.txt   | 1 +
+ hi.txt      | 1 +
+ hw.txt      | 1 +
+ newyark.txt | 0
+ 4 files changed, 3 insertions(+)
+ create mode 100644 hello.txt
+ create mode 100644 hi.txt
+ create mode 100644 hw.txt
+ create mode 100644 newyark.txt
+
+$ ls
+harry.txt  hi.txt  mf1.txt  mf3.txt  newyark.txt  R1f2.txt
+hello.txt  hw.txt  mf2.txt  mf4.txt  R1f1.txt     R1f3.txt
+
+
+git merge:-
+=========
+--> while merging be at master branch
+--> And merge the branch to the master branch
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+$ ll
+total 11
+-rw-r--r-- 1 pavan 197121  30 Aug 31 06:18 harry.txt
+-rw-r--r-- 1 pavan 197121   7 Aug 31 06:18 hello.txt
+-rw-r--r-- 1 pavan 197121   6 Aug 31 06:18 hi.txt
+-rw-r--r-- 1 pavan 197121  12 Aug 31 06:18 hw.txt
+-rw-r--r-- 1 pavan 197121  14 Aug 31 06:18 mf1.txt
+-rw-r--r-- 1 pavan 197121  14 Aug 31 06:18 mf2.txt
+-rw-r--r-- 1 pavan 197121  14 Aug 31 06:18 mf3.txt
+-rw-r--r-- 1 pavan 197121 132 Aug 31 06:18 mf4.txt
+-rw-r--r-- 1 pavan 197121   0 Aug 31 06:18 newyark.txt
+-rw-r--r-- 1 pavan 197121  21 Aug 31 06:18 R1f1.txt
+-rw-r--r-- 1 pavan 197121  26 Aug 31 06:18 R1f2.txt
+-rw-r--r-- 1 pavan 197121  25 Aug 31 06:18 R1f3.txt
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+
+$ git merge R2										--> to merge branch to the master branch
+Merge made by the 'recursive' strategy.
+ r2f1.txt | 1 +
+ r2f2.txt | 1 +
+ 2 files changed, 2 insertions(+)
+ create mode 100644 r2f1.txt
+ create mode 100644 r2f2.txt
+
+pavan@LAPTOP-ILC2D9FB MINGW64 ~/robotics (master)
+
+$ ll
+total 13
+-rw-r--r-- 1 pavan 197121  30 Aug 31 06:18 harry.txt
+-rw-r--r-- 1 pavan 197121   7 Aug 31 06:18 hello.txt
+-rw-r--r-- 1 pavan 197121   6 Aug 31 06:18 hi.txt
+-rw-r--r-- 1 pavan 197121  12 Aug 31 06:18 hw.txt
+-rw-r--r-- 1 pavan 197121  14 Aug 31 06:18 mf1.txt
+-rw-r--r-- 1 pavan 197121  14 Aug 31 06:18 mf2.txt
+-rw-r--r-- 1 pavan 197121  14 Aug 31 06:18 mf3.txt
+-rw-r--r-- 1 pavan 197121 132 Aug 31 06:18 mf4.txt
+-rw-r--r-- 1 pavan 197121   0 Aug 31 06:18 newyark.txt
+-rw-r--r-- 1 pavan 197121  21 Aug 31 06:18 R1f1.txt
+-rw-r--r-- 1 pavan 197121  26 Aug 31 06:18 R1f2.txt
+-rw-r--r-- 1 pavan 197121  25 Aug 31 06:18 R1f3.txt
+-rw-r--r-- 1 pavan 197121  10 Aug 31 06:18 r2f1.txt
+-rw-r--r-- 1 pavan 197121  16 Aug 31 06:18 r2f2.txt
+
+
+git merge conflict:
+------------------
+--> worked on the same file in the different branches with same file name
+--> while merging the branches at master branch, the file which was worked on different branches, that shows conflicts
+-->
+
+$ git mergetool			--> this is merge tool from the file content at different branches
+						--> select which content is in orderwise and save it
+$ git merge V1
+$ git merge R2
+
+
+TortoiseGit:-
+------------
+--> it is a GUI file merging tool
+--> https://tortoisegit.org/ download the software and 
+
+
+Merge:-
+=====
+In 3 ways we can merge branches
+
+1)merge			--> merge commit  --> go for log term duration projects/files
+2)rebase		--> there is no merge commit --> go for very short term duation project/files 
+3)cherry-pick	-->
+
+2)rebase:-
+=========
+--> It is another type of merging
+
+$git rebase R4		--> merging the R4 branch files in to master branch
+
+
+3)cherry-pick:-
+=============
+--> only one revision number/sha1sum/commit file to merge in to the master branch called cherry-pick
+
+$ git cherry-pick 3334afff    --> to merge other branch single file shalsum in to master branch
+$ git log					  --> to see the shalsum has merged into to master branch
+
+
+git format-patch:-
+================
+--> one deveoper made 3 changes and saved into his local repo
+--> the local repo will send to his manager for review
+--> here need not to push into remote repo without his manager review approval
+
+$ git format-patch origin/master
+
+$ scp 000*  sally@ipaddress:/home/sally/desktop
+
+In sally system:
+---------------
+$ git apply 0001*   --> to extract the patched file here 
+
+$ ls 				--> to see list of file which are commited/shared by an developer
+
+
+======================= END ========================
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+				
+
+
+
+		
+		
+		
+	
+		
+	
